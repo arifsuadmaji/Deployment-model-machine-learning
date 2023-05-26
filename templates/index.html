@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Web ML App</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* CSS styles for the cards and grid */
+    .card {
+      border: 1px solid #d0d3ce;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 7px;
+      background-color: #f5f2e6;
+    }
+
+    .card img {
+      display: block;
+      margin: 0 auto;
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .card h3 {
+      text-align: center;
+      margin-top: 20px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .card input[type="text"],
+    .card select.dropdown {
+      width: 100%;
+      padding: 5px;
+      margin-bottom: 10px;
+      border: 1px solid #060705;
+      background-color: #dce995;
+      color: #000000;
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      box-sizing: border-box;
+    }
+
+    .input-label {
+      font-family: 'Inter', sans-serif;
+      font-weight: bold;
+      font-size: 12px;
+    }
+
+    .card button {
+      display: block;
+      margin: 0 auto;
+      margin-top: 9px;
+      padding: 10px 20px;
+      background-color: #a9db7a;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .arrow-container {
+      display: flex;
+      flex-direction: column;
+      color: #000000;
+      position: relative;
+    }
+
+    .arrow-up {
+      position: absolute;
+      right: 5px;
+      top: 40%;
+      transform: translateY(-330%);
+      cursor: pointer;
+      font-size: 11px;
+      line-height: 11px;
+    }
+
+    .arrow-down {
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-180%);
+      cursor: pointer;
+      font-size: 11px;
+      line-height: 11px;
+    }
+
+    .card p#predictionResult {
+      text-align: center;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .card ul {
+      list-style: none;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .card ul li {
+      margin-bottom: 5px;
+    }
+
+    .card ul li a {
+      text-decoration: none;
+      color: #000000;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 20px;
+    }
+
+    .prediction-card {
+      width: 100%;
+      height: 200px;
+    }
+
+    /* CSS for gradient background */
+    body {
+      background: linear-gradient(to bottom, #f3cb1a, #bce793);
+    }
+  </style>
+
+  <script>
+    function incrementValue(inputId) {
+      var input = document.getElementById(inputId);
+      var value = parseFloat(input.value) || 0;
+      value += 0.01;
+      input.value = value.toFixed(2);
+    }
+
+    function decrementValue(inputId) {
+      var input = document.getElementById(inputId);
+      var value = parseFloat(input.value) || 0;
+      value -= 0.01;
+      input.value = value.toFixed(2);
+    }
+
+    window.onload = function () {
+      document.getElementById('thickInput').value = '0.00';
+      document.getElementById('widthInput').value = '0.00';
+      document.getElementById('weightInput').value = '0.00';
+    };
+  </script>
+
+</head>
+
+<body>
+  <div class="card">
+    <a src="https://ibb.co/Zc5Wh1w"><img src="https://i.ibb.co/Zc5Wh1w/steel.png" alt="steel" border="0"></a>
+    <h3>PREDIKSI JENIS BAJA</h3>
+  </div>
+
+  <div class="grid-container">
+    <div class="grid-item form">
+      <div class="card">
+        <h3>Masukkan data</h3>
+        <form action="/predict" method="post">
+          <label for="QUALCODE" class="input-label">QUALCODE:</label>
+          <select name="QUALCODE" class="dropdown">
+            <option value="CQ2">CQ2</option>
+            <option value="CQ4">CQ4</option>
+            <option value="CQUN1">CQUN1</option>
+            <option value="CQUN3">CQUN3</option>
+            <option value="CQUN">CQUN</option>
+            <option value="DQ">DQ</option>
+            <option value="CQ3EN">CQ3EN</option>
+            <option value="HR1">HR1</option>
+            <option value="DDQ1">DDQ1</option>
+            <option value="CQ3">CQ3</option>
+            <option value="CQ2MP">CQ2MP</option>
+            <option value="CQ5">CQ5</option>
+            <option value="CQ2PT">CQ2PT</option>
+            <option value="CQ2MP1">CQ2MP1</option>
+            <option value="CQ2UN">CQ2UN</option>
+            <option value="CQ2PTU">CQ2PTU</option>
+            <option value="CQUNX">CQUNX</option>
+            <option value="CQ8D">CQ8D</option>
+            <option value="CQX">CQX</option>
+            <option value="CQUN8H">CQUN8H</option>
+            <option value="CQUN8C">CQUN8C</option>
+            <option value="CQ1">CQ1</option>
+            <option value="CQ-Z">CQ-Z</option>
+            <option value="CQUN91">CQUN91</option>
+            <option value="CQ45">CQ45</option>
+            <option value="CQUN4">CQUN4</option>
+            <option value="DQUN91">DQUN91</option>
+            <option value="CQ39PT">CQ39PT</option>
+          </select><br>
+          <label for="SPEC" class="input-label">SPEC:</label>
+          <select name="SPEC" class="dropdown">
+            <option value="SNI 07 3567">SNI 07 3567</option>
+            <option value="MPIC">MPIC</option>
+            <option value="JIS G3141">JIS G3141</option>
+            <option value="SP121BQ">SP121BQ</option>
+            <option value="TS G3101G SPH440OD">TS G3101G SPH440OD</option>
+            <option value="JIS G 3131 SPHC">JIS G 3131 SPHC</option>
+            <option value="JIS G 3101 SS400">JIS G 3101 SS400</option>
+            <option value="TS G3101G SPH270COD">TS G3101G SPH270COD</option>
+            <option value="MP38">MP38</option>
+            <option value="SPCG">SPCG</option>
+            <option value="KSS37">KSS37</option>
+            <option value="TS G3100G">TS G3100G</option>
+            <option value="JIS G 3113 SAPH440">JIS G 3113 SAPH440</option>
+            <option value="KSA29">KSA29</option>
+            <option value="MP 440">MP 440</option>
+            <option value="MP1A">MP1A</option>
+            <option value="KNSS-1D">KNSS-1D</option>
+            <option value="JIS G 3132 SPHT2">JIS G 3132 SPHT2</option>
+            <option value="MP 38">MP 38</option>
+            <option value="MP 390">MP 390</option>
+            <option value="JIS G 3131 SPHD">JIS G 3131 SPHD</option>
+            <option value="SECONDARY">SECONDARY</option>
+            <option value="KSA 37H">KSA 37H</option>
+            <option value="KSA 29H">KSA 29H</option>
+            <option value="KSA37">KSA37</option>
+            <option value="SPC">SPC</option>
+            <option value="JIS G 3132 SPHT1">JIS G 3132 SPHT1</option>
+            <option value="MS 1705:2003 SPHC">MS 1705:2003 SPHC</option>
+            <option value="MPW 2">MPW 2</option>
+            <option value="COMMERCIAL QUALITY">COMMERCIAL QUALITY</option>
+            <option value="KSS 37H">KSS 37H</option>
+            <option value="KSA 39H">KSA 39H</option>
+            <option value="KSAPH270C">KSAPH270C</option>
+            <option value="SPHG 450">SPHG 450</option>
+            <option value="SPCK-6">SPCK-6</option>
+            <option value="JIS G3133">JIS G3133</option>
+            <option value="TS G3101G SPH270DOD">TS G3101G SPH270DOD</option>
+            <option value="JSH270C">JSH270C</option>
+            <option value="JIS G 3113 SAPH370">JIS G 3113 SAPH370</option>
+            <option value="YSH270C-OP">YSH270C-OP</option>
+          </select><br>
+          <label for="THICK" class="input-label">THICK:</label>
+          <div>
+            <input type="text" name="THICK" id="thickInput" placeholder="Masukkan nilai" value="{{ thick }}">
+            <div class="arrow-container">
+              <span class="arrow-up" onclick="incrementValue('thickInput')">▲</span>
+              <span class="arrow-down" onclick="decrementValue('thickInput')">▼</span>
+            </div>
+          </div>
+          <label for="WIDTH" class="input-label">WIDTH:</label>
+          <div>
+            <input type="text" name="WIDTH" id="widthInput" placeholder="Masukkan nilai" value="{{ width }}">
+            <div class="arrow-container">
+              <span class="arrow-up" onclick="incrementValue('widthInput')">▲</span>
+              <span class="arrow-down" onclick="decrementValue('widthInput')">▼</span>
+            </div>
+          </div>
+          <label for="WEIGHT" class="input-label">WEIGHT:</label>
+          <div>
+            <input type="text" name="WEIGHT" id="weightInput" placeholder="Masukkan nilai" value="{{ weight }}">
+            <div class="arrow-container">
+              <span class="arrow-up" onclick="incrementValue('weightInput')">▲</span>
+              <span class="arrow-down" onclick="decrementValue('weightInput')">▼</span>
+            </div>
+          </div>
+          <button type="submit">Prediksi Sekarang</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="grid-item prediction">
+      <div class="card" style="height: 210px;">
+        <h3>Hasil prediksi:</h3>
+        <p id="predictionResult">
+          {% if prediction %}
+          {{ prediction }}
+          {% endif %}
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Developer</h3>
+        <ul>
+          <li><a href="https://www.linkedin.com/in/arifsuadmaji/">Arif Su'admaji</a></li>
+          <li><a href="https://www.linkedin.com/in/ziyad-muhammad-adzin-azzufari/">Ziyad Muhammad Adzin</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
